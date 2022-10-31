@@ -21,7 +21,7 @@ class TopRedditsTableViewCell: UITableViewCell {
     lazy private var topRedditsImage: UIImageView = UIImageView()
     lazy private var topRedditsDetail: UILabel = UILabel()
     private let defaultThumbnail = "default"
-    private let defaultImage = UIImage(systemName: "camera")
+    private let defaultImage = UIImage(named: "redditError")
     var reddit: RedditWithImage?
     
     func populate(reddit: RedditWithImage ) {

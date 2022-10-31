@@ -26,7 +26,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.setHidesBackButton(true, animated: true)
         title = "HomeTile".localized()
-        self.view.backgroundColor = .systemGray
+        self.view.backgroundColor = .white
         setLoadling()
         Task.detached {
             try await self.getTopReddistListView()
