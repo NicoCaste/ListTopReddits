@@ -33,15 +33,20 @@ final class TopRedditsRepository {
 extension TopRedditsRepository {
     
     func getBest(token: TokenResponse, next: String? = nil) async throws -> Result<BestApiResponse, Error>{
-        var urlString = ApiCallerHelper.makeUrlFromOAuth(path: "best")
+        var validToken = token
         
+        if AuthHelper.needRefreshToken() {
+            validToken = await AuthHelper.getRefreshToken(token: token) ?? token
+        }
+        
+        var urlString = ApiCallerHelper.makeUrlFromOAuth(path: "best")
         if let next = next {
             let params = ["after" : next]
             urlString += "?" + params.getUrlQuery()
         }
         
         guard let url = URL(string: urlString) else { throw NetWorkingError.badURL }
-        let request = getRequestForBest(url: url, token: token)
+        let request = getRequestForBest(url: url, token: validToken)
         return try await withCheckedThrowingContinuation({ continuation in
             webService.get(from: request, completion: { result in
                 switch result {
@@ -89,7 +94,8 @@ extension TopRedditsRepository {
                 switch result {
                 case .success(let data):
                     do {
-                        let token: TokenResponse = try data.decodedObject()
+                        var token: TokenResponse = try data.decodedObject()
+                        token.date = Date() 
                         continuation.resume(returning: .success(token))
                     } catch {
                         continuation.resume(throwing: error)
@@ -122,5 +128,58 @@ extension TopRedditsRepository {
         components.queryItems?.append(URLQueryItem(name: "grant_type", value: "authorization_code"))
         components.queryItems?.append(URLQueryItem(name: "code", value: code))
         return components
+    }
+}
+
+
+// MARK: - RefreshToken
+extension TopRedditsRepository {
+
+    func refreshToken(token: TokenResponse) async throws -> Result<TokenResponse, Error> {
+        let urlString = ApiCallerHelper.makeURLFromBasicUrl(path: "api/v1/access_token")
+        guard let url = URL(string: urlString) else { throw NetWorkingError.badURL }
+        guard let refreshToken = token.refreshToken else { throw NetWorkingError.unknowError }
+        
+        let request = getTokenRefreshRequest(url: url, refreshToken: refreshToken)
+        
+        return try await withCheckedThrowingContinuation({ continuation in
+            webService.get(from: request, completion: { result in
+                switch result {
+                case .success(let data):
+                    do {
+                        var token: TokenResponse = try data.decodedObject()
+                        token.date = Date()
+                        continuation.resume(returning: .success(token))
+                    } catch {
+                        continuation.resume(throwing: error)
+                    }
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            })
+        })
+    }
+    
+    func getComponentForRefreshToken(refreshToken: String) -> URLComponents {
+        var components = getComponents()
+        components.queryItems?.append(URLQueryItem(name: "grant_type", value: "refresh_token"))
+        components.queryItems?.append(URLQueryItem(name: "refresh_token", value: refreshToken))
+        return components
+    }
+    
+    func getTokenRefreshRequest(url: URL, refreshToken: String) -> URLRequest {
+        let components = getComponentForRefreshToken(refreshToken: refreshToken)
+        var request = getBasicRequest(url: url, components: components)
+        request.httpMethod = "POST"
+        
+        let user = Constant.user
+        let password = ""
+        let loginString = String(format: "%@:%@", user, password)
+        let loginData = loginString.data(using: String.Encoding.utf8)!
+        let base64LoginString = loginData.base64EncodedString()
+        
+        request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
+        request.httpBody = components.query?.data(using: .utf8)
+        return request
     }
 }

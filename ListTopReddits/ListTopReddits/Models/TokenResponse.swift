@@ -12,4 +12,6 @@ struct TokenResponse: Codable {
     var tokenType: String?
     var exiperesIn: Int?
     var scope: String?
+    var refreshToken: String?
+    var date: Date?
 }

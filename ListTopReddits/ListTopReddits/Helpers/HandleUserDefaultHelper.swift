@@ -14,6 +14,6 @@ enum UserDefaultKey: String {
 struct HandleUserDefaultHelper {
     
     static func getObjectFrom(key: UserDefaultKey) -> Any? {
-        UserDefaults.standard.value(forKey: key.rawValue)
+        return UserDefaults.standard.value(forKey: key.rawValue)
     }
 }

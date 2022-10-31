@@ -11,6 +11,7 @@ enum NetWorkingError: Error {
     case badURL
     case serverError
     case unknowError
+    case needRefreshToken
 }
 
 struct UrlSessionWebService: WebService {
@@ -29,6 +30,8 @@ struct UrlSessionWebService: WebService {
             case 200..<300:
                 data.printAsJSON()
                 completion(.success(data))
+            case 401:
+                completion(.failure(NetWorkingError.needRefreshToken))
             case 500..<600:
                 completion(.failure(NetWorkingError.serverError))
             default:
