@@ -8,11 +8,12 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-    let viewModel: HomeViewModel
+    let viewModel: HomeViewModelProtocol
     lazy var loading: UIActivityIndicatorView = UIActivityIndicatorView()
     @MainActor var topRedditsList: TopRedditsListView?
+    var notificationCenter: NotificationCenter = NotificationCenter.default
     
-    init(viewModel: HomeViewModel) {
+    init(viewModel: HomeViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -24,13 +25,18 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.setHidesBackButton(true, animated: true)
-        title = "Best Reddits"
+        title = "HomeTile".localized()
         self.view.backgroundColor = .systemGray
         setLoadling()
         Task.detached {
             try await self.getTopReddistListView()
             await self.setTopRedditsList()
         }
+        notificationCenter.addObserver(self, selector: #selector(showErrorView(_:)), name: NSNotification.Name.showErrorView, object: nil)
+    }
+    
+    deinit {
+        notificationCenter.removeObserver(self, name: NSNotification.Name.showErrorView, object: nil)
     }
     
     @MainActor
@@ -59,6 +65,13 @@ class HomeViewController: UIViewController {
             topRedditsList.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
     }
+    
+    //MARK: - ShowErrorView
+    @objc func showErrorView(_ error: Notification) {
+        guard let errorMessage = error.userInfo?["errorMessage"] as? ErrorMessage,
+              let navigation = self.navigationController else { return }
+        Router.showErrorView(navigation: navigation, message: errorMessage, token: viewModel.token)
+    }
 }
 
 //MARK: - TopReddistList Delegate
@@ -77,7 +90,7 @@ extension HomeViewController: TopReddistListDelegate {
         let url = reddit.childrenData.url
         if let url = url, url.contains(".jpg") || url.contains(".png")  {
             guard let navigation = navigationController else { return }
-            Router.goToRedditDetail(navigation: navigation, reddit: reddit)
+            Router.goToRedditDetail(navigation: navigation, reddit: reddit, token: viewModel.token)
         } else {
             showAlert()
         }

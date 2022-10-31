@@ -20,7 +20,9 @@ class RedditDetailViewController: UIViewController {
     lazy var contentView: UIView = UIView()
     lazy var filterColorView: UIView = UIView()
     lazy var contentViewBackground: UIImageView = UIImageView()
-    let viewModel: RedditDetailViewModel
+    var notificationCenter: NotificationCenter = NotificationCenter.default
+    
+    let viewModel: RedditDetailViewModelProtocol
     var saved: Bool = false
     
     override func viewDidLoad() {
@@ -36,15 +38,20 @@ class RedditDetailViewController: UIViewController {
         setDetailTitleLabel()
         setDetailDescriptionLabel()
         setLoadling()
+        notificationCenter.addObserver(self, selector: #selector(showErrorView(_:)), name: NSNotification.Name.showErrorView, object: nil)
     }
     
-    init(viewModel: RedditDetailViewModel) {
+    init(viewModel: RedditDetailViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        notificationCenter.removeObserver(NSNotification.Name.showErrorView)
     }
     
     enum SubscribedTitle: String {
@@ -132,15 +139,11 @@ class RedditDetailViewController: UIViewController {
         }
     }
     
-    func setLoadling() {
-        loading.style = .large
-        loading.color = .white
-        loading.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(loading)
-        contentView.bringSubviewToFront(loading)
-        loading.startAnimating()
-        loading.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        loading.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+    //MARK: - ShowErrorView
+    @objc func showErrorView(_ error: Notification) {
+        guard let errorMessage = error.userInfo?["errorMessage"] as? ErrorMessage,
+              let navigation = self.navigationController else { return }
+        Router.showErrorView(navigation: navigation, message: errorMessage, token: viewModel.token)
     }
 }
 
@@ -269,6 +272,18 @@ extension RedditDetailViewController {
         detailDescriptionLabel.numberOfLines = 0
         detailDescriptionLabel.font = UIFont.preferredFont(forTextStyle: .body).withSize(18)
         layoutDetailDescriptionLabel()
+    }
+    
+    // MARK: - Set Loading
+    func setLoadling() {
+        loading.style = .large
+        loading.color = .white
+        loading.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(loading)
+        contentView.bringSubviewToFront(loading)
+        loading.startAnimating()
+        loading.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        loading.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
     }
 }
 

@@ -7,12 +7,18 @@
 
 import Foundation
 
-class HomeViewModel {
+protocol HomeViewModelProtocol {
+    func getTopReddits(getAfter: Bool) async -> [RedditWithImage]
+    var token: TokenResponse { get }
+    init(token: TokenResponse)
+}
+
+class HomeViewModel: HomeViewModelProtocol {
     var token: TokenResponse
     var reddits: BestApiResponse?
     var redditsWithImage: [RedditWithImage] = []
     
-    init(token: TokenResponse) {
+    required init(token: TokenResponse) {
         self.token = token
     }
     
@@ -28,13 +34,17 @@ class HomeViewModel {
                 self.reddits = reddits
                 setRedditsWithImage()
                 return self.redditsWithImage
-            case .failure(let error):
-                print(error)
+            case .failure(_):
+               await showError()
             }
         } catch {
-            print(error)
+            await showError()
         }
         return []
+    }
+    
+    @MainActor func showError() async {
+        ShowErrorManager.showErrorView(title: "Ups".localized(), description: "genericError".localized())
     }
     
     func setRedditsWithImage() {

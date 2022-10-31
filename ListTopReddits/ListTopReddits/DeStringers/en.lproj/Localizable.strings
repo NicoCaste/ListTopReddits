@@ -1,0 +1,11 @@
+/* 
+  Localizable.strings
+  ListTopReddits
+
+  Created by nicolas castello on 31/10/2022.
+  
+*/
+
+"HomeTitle" = "Best Reddits";
+"Ups" = "Ups!";
+"genericError" = "We had a problem. \nPlease try later!";

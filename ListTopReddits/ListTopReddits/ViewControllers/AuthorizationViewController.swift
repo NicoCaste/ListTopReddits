@@ -57,13 +57,17 @@ class AuthorizationViewController: UIViewController, WKNavigationDelegate {
                 await self?.viewModel?.saveToken(token: token, key: .token)
                 guard let navigation = await self?.navigationController else { return }
                 await Router.goToRootView(navigation: navigation, token: token)
-            case .failure(let error):
-                print(error)
+            case .failure(_):
+                await self?.showError()
             case .none:
-                print("desconocido")
+                await self?.showError()
             }
         }
         
         return .allow
+    }
+    
+    @MainActor func showError() async {
+        ShowErrorManager.showErrorView(title: "Ups".localized(), description: "genericError".localized())
     }
 }

@@ -36,6 +36,10 @@
 		0EB3486D290F1A4E00553FF7 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB3486C290F1A4E00553FF7 /* StringExtension.swift */; };
 		0EB3486F290F1A7A00553FF7 /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB3486E290F1A7A00553FF7 /* DictionaryExtension.swift */; };
 		0EB34871290F217A00553FF7 /* RedditDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB34870290F217A00553FF7 /* RedditDetailViewModel.swift */; };
+		0EB3487329100E8500553FF7 /* ErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB3487229100E8500553FF7 /* ErrorViewController.swift */; };
+		0EB3487529100ECA00553FF7 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB3487429100ECA00553FF7 /* ErrorManager.swift */; };
+		0EB3487729100F6A00553FF7 /* NotificationNameExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB3487629100F6A00553FF7 /* NotificationNameExtension.swift */; };
+		0EB3487A2910169600553FF7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0EB3487C2910169600553FF7 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +93,10 @@
 		0EB3486C290F1A4E00553FF7 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		0EB3486E290F1A7A00553FF7 /* DictionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
 		0EB34870290F217A00553FF7 /* RedditDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedditDetailViewModel.swift; sourceTree = "<group>"; };
+		0EB3487229100E8500553FF7 /* ErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewController.swift; sourceTree = "<group>"; };
+		0EB3487429100ECA00553FF7 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
+		0EB3487629100F6A00553FF7 /* NotificationNameExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNameExtension.swift; sourceTree = "<group>"; };
+		0EB3487B2910169600553FF7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +160,7 @@
 				0EB3480E290D870200553FF7 /* Assets.xcassets */,
 				0EB34813290D870200553FF7 /* Info.plist */,
 				0EB34857290E1C6600553FF7 /* Router.swift */,
+				0EB3487429100ECA00553FF7 /* ErrorManager.swift */,
 			);
 			path = ListTopReddits;
 			sourceTree = "<group>";
@@ -200,6 +209,7 @@
 				0EB3483E290D883C00553FF7 /* HomeViewController.swift */,
 				0EB34848290DD0D900553FF7 /* RedditDetailViewController.swift */,
 				0EB34853290DDE3800553FF7 /* AuthorizationViewController.swift */,
+				0EB3487229100E8500553FF7 /* ErrorViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -221,6 +231,7 @@
 				0EB3486A290F1A2000553FF7 /* UrlRequestExtension.swift */,
 				0EB3486C290F1A4E00553FF7 /* StringExtension.swift */,
 				0EB3486E290F1A7A00553FF7 /* DictionaryExtension.swift */,
+				0EB3487629100F6A00553FF7 /* NotificationNameExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -255,6 +266,7 @@
 		0EB3483D290D87ED00553FF7 /* DeStringers */ = {
 			isa = PBXGroup;
 			children = (
+				0EB3487C2910169600553FF7 /* Localizable.strings */,
 			);
 			path = DeStringers;
 			sourceTree = "<group>";
@@ -396,6 +408,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EB3480F290D870200553FF7 /* Assets.xcassets in Resources */,
+				0EB3487A2910169600553FF7 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,6 +440,7 @@
 				0EB34849290DD0D900553FF7 /* RedditDetailViewController.swift in Sources */,
 				0EB34841290D895100553FF7 /* TopRedditsListView.swift in Sources */,
 				0EB3484B290DD48200553FF7 /* UIImageExtension.swift in Sources */,
+				0EB3487729100F6A00553FF7 /* NotificationNameExtension.swift in Sources */,
 				0EB3485C290E804500553FF7 /* WebServiceProtocol.swift in Sources */,
 				0EB34806290D870000553FF7 /* AppDelegate.swift in Sources */,
 				0EB34865290E83EE00553FF7 /* AuthParams.swift in Sources */,
@@ -435,8 +449,10 @@
 				0EB34861290E80CC00553FF7 /* ApiCallerHelper.swift in Sources */,
 				0EB34808290D870000553FF7 /* SceneDelegate.swift in Sources */,
 				0EB34869290EB45900553FF7 /* BestApiResponse.swift in Sources */,
+				0EB3487329100E8500553FF7 /* ErrorViewController.swift in Sources */,
 				0EB34863290E825300553FF7 /* Constant.swift in Sources */,
 				0EB3486F290F1A7A00553FF7 /* DictionaryExtension.swift in Sources */,
+				0EB3487529100ECA00553FF7 /* ErrorManager.swift in Sources */,
 				0EB3485A290E1CCB00553FF7 /* HomeViewModel.swift in Sources */,
 				0EB3483F290D883C00553FF7 /* HomeViewController.swift in Sources */,
 				0EB3484D290DD70900553FF7 /* TopRedditsRepository.swift in Sources */,
@@ -479,6 +495,17 @@
 			targetProxy = 0EB34823290D870200553FF7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		0EB3487C2910169600553FF7 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0EB3487B2910169600553FF7 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		0EB3482A290D870200553FF7 /* Debug */ = {

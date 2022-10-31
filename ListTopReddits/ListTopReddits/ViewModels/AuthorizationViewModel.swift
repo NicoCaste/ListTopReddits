@@ -59,7 +59,7 @@ class AuthorizationViewModel: AuthViewModelProtocol {
     }
     
     func saveToken(token: TokenResponse, key: UserDefaultKey) {
-        UserDefaults.standard.set( try? PropertyListEncoder().encode(token), forKey: UserDefaultKey.token.rawValue)
+        UserDefaults.standard.set(try? PropertyListEncoder().encode(token), forKey: UserDefaultKey.token.rawValue)
         UserDefaults.standard.synchronize()
     }
 }

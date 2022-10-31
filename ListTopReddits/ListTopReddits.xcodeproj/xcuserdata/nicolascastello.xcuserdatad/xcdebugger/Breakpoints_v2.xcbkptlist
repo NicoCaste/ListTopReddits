@@ -39,22 +39,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "690337CB-2C45-456B-82BE-24D26A84DFDF"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ListTopReddits/Networking/Repository/TopRedditsRepository.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
-            landmarkName = "getBest(token:next:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "8B478BDB-1CBE-4D3E-B21A-3FB6D158BA04"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -62,8 +46,8 @@
             filePath = "ListTopReddits/ViewControllers/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
             landmarkName = "goToReddistDetail(reddit:)"
             landmarkType = "7">
             <Locations>
@@ -110,9 +94,121 @@
             filePath = "ListTopReddits/ViewModels/RedditDetailViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
             landmarkName = "getTextColor()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "19A321BE-09C3-459D-A280-EDB6BC6A4CDD"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ListTopReddits/ViewModels/HomeViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "getTopReddits(getAfter:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "19A321BE-09C3-459D-A280-EDB6BC6A4CDD - 923016aff8153d3e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) await resume partial function for ListTopReddits.HomeViewModel.getTopReddits(getAfter: Swift.Bool) async -&gt; Swift.Array&lt;ListTopReddits.RedditWithImage&gt;"
+                  moduleName = "ListTopReddits"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nicolascastello/Desktop/ListTopReddits/ListTopReddits/ListTopReddits/ViewModels/HomeViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41"
+                  offsetFromSymbolStart = "1160">
+               </Location>
+               <Location
+                  uuid = "19A321BE-09C3-459D-A280-EDB6BC6A4CDD - 4eda64b24232f93c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) await resume partial function for ListTopReddits.HomeViewModel.getTopReddits(getAfter: Swift.Bool) async -&gt; Swift.Array&lt;ListTopReddits.RedditWithImage&gt;"
+                  moduleName = "ListTopReddits"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nicolascastello/Desktop/ListTopReddits/ListTopReddits/ListTopReddits/ViewModels/HomeViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41"
+                  offsetFromSymbolStart = "80">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "42E13F2C-76AC-451C-ADAE-785A3D0CE3A8"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ListTopReddits/ViewModels/HomeViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "getTopReddits(getAfter:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "42E13F2C-76AC-451C-ADAE-785A3D0CE3A8 - 923016aff8153ddd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) await resume partial function for ListTopReddits.HomeViewModel.getTopReddits(getAfter: Swift.Bool) async -&gt; Swift.Array&lt;ListTopReddits.RedditWithImage&gt;"
+                  moduleName = "ListTopReddits"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nicolascastello/Desktop/ListTopReddits/ListTopReddits/ListTopReddits/ViewModels/HomeViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "38"
+                  endingLineNumber = "38"
+                  offsetFromSymbolStart = "1012">
+               </Location>
+               <Location
+                  uuid = "42E13F2C-76AC-451C-ADAE-785A3D0CE3A8 - 2c4d0db037065bde"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for ListTopReddits.HomeViewModel.getTopReddits(getAfter: Swift.Bool) async -&gt; Swift.Array&lt;ListTopReddits.RedditWithImage&gt;"
+                  moduleName = "ListTopReddits"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nicolascastello/Desktop/ListTopReddits/ListTopReddits/ListTopReddits/ViewModels/HomeViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "38"
+                  endingLineNumber = "38"
+                  offsetFromSymbolStart = "80">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "87A0BBF7-6B56-43F4-9A81-3B74FC169CC4"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ListTopReddits/ViewModels/RedditDetailViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "init(reddit:token:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -8,12 +8,23 @@
 import Foundation
 import UIKit
 
-class RedditDetailViewModel {
-    let reddit: RedditWithImage
+protocol RedditDetailViewModelProtocol {
+    func set(backgroundNumericalValueFrom color: UIColor)
+    func getTextColor() -> UIColor
+    func getUrlImage() -> UIImage?
+    var reddit: RedditWithImage { get }
+    var token: TokenResponse { get }
+    init(reddit: RedditWithImage, token: TokenResponse)
+}
+
+class RedditDetailViewModel: RedditDetailViewModelProtocol {
+    var reddit: RedditWithImage
+    var token: TokenResponse
     var backgroundNumericalValue: Double = 0
     
-    init(reddit: RedditWithImage) {
+    required init(reddit: RedditWithImage, token: TokenResponse) {
         self.reddit = reddit
+        self.token = token
     }
     
     func set(backgroundNumericalValueFrom color: UIColor) {
