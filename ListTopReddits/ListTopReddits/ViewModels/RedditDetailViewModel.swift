@@ -29,4 +29,14 @@ class RedditDetailViewModel {
     func getTextColor() -> UIColor {
         return (backgroundNumericalValue > 0.5) ? .black : .white
     }
+    
+    func getUrlImage() async -> UIImage? {
+        guard let imageUrl = reddit.childrenData.url,
+              let url = URL(string: imageUrl),
+              let data = try? Data(contentsOf: url)
+        else { return nil }
+        
+        let image = UIImage(data: data)
+        return image
+    }
 }

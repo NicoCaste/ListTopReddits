@@ -9,6 +9,7 @@ import UIKit
 
 class RedditDetailViewController: UIViewController {
     lazy var backImageTarget: UIImageView = UIImageView()
+    lazy var loading: UIActivityIndicatorView = UIActivityIndicatorView()
     @MainActor lazy var imageView: UIImageView = UIImageView()
     lazy var authorTitleLabel: UILabel = UILabel()
     lazy var releaseDateLabel: UILabel = UILabel()
@@ -20,7 +21,7 @@ class RedditDetailViewController: UIViewController {
     lazy var filterColorView: UIView = UIView()
     lazy var contentViewBackground: UIImageView = UIImageView()
     let viewModel: RedditDetailViewModel
-    let notificationCenter = NotificationCenter.default
+    var saved: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +35,7 @@ class RedditDetailViewController: UIViewController {
         setSaveImageButton()
         setDetailTitleLabel()
         setDetailDescriptionLabel()
+        setLoadling()
     }
     
     init(viewModel: RedditDetailViewModel) {
@@ -52,8 +54,12 @@ class RedditDetailViewController: UIViewController {
     
     // MARK: - MovieImage
     func setRedditImage() {
-        let image = getUrlImage()
-        set(image: image)
+        Task.detached {
+            let image = await self.viewModel.getUrlImage()
+            await self.set(image: image)
+        }
+        guard let color = viewModel.reddit.image?.averageColor else { return }
+        setColorFilterView(color: color.withAlphaComponent(0.9))
     }
     
     @MainActor func set(image: UIImage?) {
@@ -61,18 +67,7 @@ class RedditDetailViewController: UIViewController {
         let detailImage: UIImage = (image != nil) ? image! : thumbnail!
         viewModel.reddit.image = detailImage
         imageView.image = detailImage
-        guard let color = detailImage.averageColor else { return }
-        setColorFilterView(color: color.withAlphaComponent(0.9))
-    }
-    
-    func getUrlImage()  -> UIImage? {
-        guard let imageUrl = viewModel.reddit.childrenData.url,
-              let url = URL(string: imageUrl),
-              let data = try? Data(contentsOf: url)
-        else { return nil }
-        
-        let image = UIImage(data: data)
-        return image
+        loading.stopAnimating()
     }
     
     // MARK: - closeView
@@ -81,10 +76,11 @@ class RedditDetailViewController: UIViewController {
     }
     
     // MARK: - subscribeFilms
-    @objc func saveImage() {
-        guard let image = viewModel.reddit.image,
+    @objc func saveImage() async {
+        guard let image = await viewModel.getUrlImage(),
               let pngImage = image.pngData()  ,
-        let imageFinal = UIImage(data: pngImage) else { return }
+              let imageFinal = UIImage(data: pngImage)
+        else { return }
         writeToPhotoAlbum(image: imageFinal)
     }
 
@@ -93,10 +89,12 @@ class RedditDetailViewController: UIViewController {
     }
 
     @objc func saveCompleted(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
-        saveImageButton.setTitle("Saved Image", for: .normal)
-        saveImageButton.setTitleColor(.black, for: .normal)
-        saveImageButton.backgroundColor = .white
-        showAlert()
+        if error != nil {
+            showAlert(title: "Ups!", message: "we cant save the image!", action: goToSetting)
+            return
+        }
+        
+        setSavedButton()
     }
     
     // MARK: - SubscribeButtonContent
@@ -104,10 +102,41 @@ class RedditDetailViewController: UIViewController {
         saveImageButton.setTitle("Save Image", for: .normal)
     }
     
-    func showAlert() {
-        let alert = UIAlertController(title: "Great!", message: "We already saved the image! ", preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: "Ok!", style: UIAlertAction.Style.default, handler: nil))
+    func showAlert(title: String, message: String, action: ((_ alert: UIAlertAction) -> Void)?) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Continue", style: UIAlertAction.Style.default, handler: action))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func goToSetting(_ alert: UIAlertAction) {
+        guard let seeingsUrl = URL(string: UIApplication.openSettingsURLString) else { return }
+        if UIApplication.shared.canOpenURL(seeingsUrl) {
+            UIApplication.shared.open(seeingsUrl, completionHandler: { success in
+                print(success)
+            })
+        }
+    }
+    
+    func setSavedButton() {
+        saveImageButton.setTitle("Saved Image", for: .normal)
+        saveImageButton.setTitleColor(.black, for: .normal)
+        saveImageButton.backgroundColor = .white
+        if saved {
+            showAlert(title: "Hey!", message: "This image was already saved", action: nil)
+        } else {
+            showAlert(title: "Great!", message: "We already saved the image!", action: nil)
+            saved = true
+        }
+    }
+    
+    func setLoadling() {
+        loading.style = .large
+        loading.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(loading)
+        contentView.bringSubviewToFront(loading)
+        loading.startAnimating()
+        loading.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        loading.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
     }
 }
 
@@ -266,8 +295,8 @@ extension RedditDetailViewController {
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 43),
             imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            imageView.heightAnchor.constraint(equalToConstant: 273),
-            imageView.widthAnchor.constraint(equalToConstant: 182)
+            imageView.heightAnchor.constraint(equalToConstant: 300),
+            imageView.widthAnchor.constraint(equalToConstant: 200)
         ])
     }
     

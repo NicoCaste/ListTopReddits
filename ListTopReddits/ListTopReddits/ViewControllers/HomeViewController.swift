@@ -9,6 +9,7 @@ import UIKit
 
 class HomeViewController: UIViewController {
     let viewModel: HomeViewModel
+    lazy var loading: UIActivityIndicatorView = UIActivityIndicatorView()
     @MainActor var topRedditsList: TopRedditsListView?
     
     init(viewModel: HomeViewModel) {
@@ -22,7 +23,10 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor  = .systemGray
+        navigationItem.setHidesBackButton(true, animated: true)
+        title = "Best Reddits"
+        self.view.backgroundColor = .systemGray
+        setLoadling()
         Task.detached {
             try await self.getTopReddistListView()
             await self.setTopRedditsList()
@@ -33,6 +37,7 @@ class HomeViewController: UIViewController {
     func getTopReddistListView() async throws {
         let bestReddits = await self.viewModel.getTopReddits(getAfter: false)
         self.topRedditsList = TopRedditsListView(frame: self.view.frame, reddist: bestReddits)
+        loading.stopAnimating()
     }
     
     // MARK: - Set TopRedditsList
@@ -82,5 +87,15 @@ extension HomeViewController: TopReddistListDelegate {
         let alert = UIAlertController(title: "Sorry!", message: "We have not details to show you! ", preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Ok!", style: UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    func setLoadling() {
+        loading.style = .large
+        loading.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(loading)
+        view.bringSubviewToFront(loading)
+        loading.startAnimating()
+        loading.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loading.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
 }
