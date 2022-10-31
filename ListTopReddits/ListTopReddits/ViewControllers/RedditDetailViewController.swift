@@ -54,12 +54,12 @@ class RedditDetailViewController: UIViewController {
     
     // MARK: - MovieImage
     func setRedditImage() {
-        Task.detached {
-            let image = await self.viewModel.getUrlImage()
-            await self.set(image: image)
-        }
         guard let color = viewModel.reddit.image?.averageColor else { return }
         setColorFilterView(color: color.withAlphaComponent(0.9))
+        Task {
+            let image = self.viewModel.getUrlImage()
+            self.set(image: image)
+        }
     }
     
     @MainActor func set(image: UIImage?) {
@@ -76,8 +76,9 @@ class RedditDetailViewController: UIViewController {
     }
     
     // MARK: - subscribeFilms
-    @objc func saveImage() async {
-        guard let image = await viewModel.getUrlImage(),
+    @objc func saveImage() {
+        loading.startAnimating()
+        guard let image = viewModel.getUrlImage(),
               let pngImage = image.pngData()  ,
               let imageFinal = UIImage(data: pngImage)
         else { return }
@@ -85,7 +86,7 @@ class RedditDetailViewController: UIViewController {
     }
 
     func writeToPhotoAlbum(image: UIImage) {
-        UIImageWriteToSavedPhotosAlbum(image, self, #selector(saveCompleted), nil)
+            UIImageWriteToSavedPhotosAlbum(image, self, #selector(saveCompleted), nil)
     }
 
     @objc func saveCompleted(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
@@ -95,6 +96,7 @@ class RedditDetailViewController: UIViewController {
         }
         
         setSavedButton()
+        loading.stopAnimating()
     }
     
     // MARK: - SubscribeButtonContent
@@ -121,6 +123,7 @@ class RedditDetailViewController: UIViewController {
         saveImageButton.setTitle("Saved Image", for: .normal)
         saveImageButton.setTitleColor(.black, for: .normal)
         saveImageButton.backgroundColor = .white
+        
         if saved {
             showAlert(title: "Hey!", message: "This image was already saved", action: nil)
         } else {
@@ -131,6 +134,7 @@ class RedditDetailViewController: UIViewController {
     
     func setLoadling() {
         loading.style = .large
+        loading.color = .white
         loading.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(loading)
         contentView.bringSubviewToFront(loading)

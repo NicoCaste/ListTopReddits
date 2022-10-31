@@ -30,7 +30,7 @@ class RedditDetailViewModel {
         return (backgroundNumericalValue > 0.5) ? .black : .white
     }
     
-    func getUrlImage() async -> UIImage? {
+    func getUrlImage() -> UIImage? {
         guard let imageUrl = reddit.childrenData.url,
               let url = URL(string: imageUrl),
               let data = try? Data(contentsOf: url)
